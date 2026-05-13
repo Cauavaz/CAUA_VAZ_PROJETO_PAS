@@ -1,28 +1,28 @@
-# 📁 Estrutura Organizada - Projeto Paschoalotto
+# Estrutura Organizada
 
-## ✅ BACKEND OFICIAL (USAR)
+## BACKEND OFICIAL (USAR)
 
-### 📍 Localização
+### Localizacao
 ```
 c:\PROEJTO_PASC CAUAVAZ\API\backend\
 ```
 
-### 🏗️ Estrutura Clean Architecture
+### Estrutura Clean Architecture
 
 ```
 backend/
 │
-├── 📄 Paschoalotto.sln                 ← ABRA ESTE ARQUIVO
-├── 📄 GUIA_RAPIDO.md                   ← Guia de comandos
+├── Paschoalotto.sln
+├── GUIA_RAPIDO.md
 │
 └── src/
     │
-    ├── 🔷 Paschoalotto.Domain/
+    ├── Paschoalotto.Domain/
     │   └── Entities/
     │       ├── User.cs                 (Usuários com autenticação)
     │       └── Produto.cs              (Produtos do sistema)
     │
-    ├── 🔶 Paschoalotto.Application/
+    ├── Paschoalotto.Application/
     │   ├── DTOs/
     │   │   └── Auth/                   (RegisterRequest, LoginRequest, etc)
     │   ├── Interfaces/
@@ -32,7 +32,7 @@ backend/
     │   └── Services/
     │       └── AuthService.cs          (Lógica de autenticação)
     │
-    ├── 🔸 Paschoalotto.Infrastructure/
+    ├── Paschoalotto.Infrastructure/
     │   ├── Data/
     │   │   └── AppDbContext.cs         (EF Core - Users + Produtos)
     │   ├── Repositories/
@@ -41,7 +41,7 @@ backend/
     │   │   └── JwtService.cs           (Geração de tokens JWT)
     │   └── DependencyInjection.cs      (Configuração de serviços)
     │
-    └── 🔹 Paschoalotto.API/
+    └── Paschoalotto.API/
         ├── Controllers/
         │   └── AuthController.cs       (Endpoints de autenticação)
         ├── Program.cs                  (Configuração principal)
@@ -49,7 +49,7 @@ backend/
         └── Properties/
 ```
 
-### ⚡ Como Usar
+### Como Usar
 
 ```powershell
 # 1. Navegar até a pasta
@@ -63,7 +63,7 @@ dotnet run --project src/Paschoalotto.API
 # Swagger: http://localhost:5000/swagger
 ```
 
-### 🎯 Recursos Implementados
+### Recursos Implementados
 
 ✅ **Autenticação JWT completa**
 - Registro de usuários
@@ -91,21 +91,21 @@ dotnet run --project src/Paschoalotto.API
 
 ---
 
-## ⚠️ BACKEND ANTIGO (NÃO USAR)
+## BACKEND ANTIGO (NAO USAR)
 
 ### 📍 Localização
 ```
 c:\PROEJTO_PASC CAUAVAZ\API\API_PROJETO_PASC\
 ```
 
-### ❌ Por que não usar?
+### Por que nao usar?
 
 - Estrutura simples (sem camadas)
 - Sem autenticação
 - Sem organização de código
 - Difícil de manter e escalar
 
-### ✅ O que foi migrado?
+### O que foi migrado?
 
 - ✅ Entidade `Produto` → Migrada para o novo backend
 - ✅ Tabela `Produtos` → Mantida no banco de dados
@@ -113,7 +113,7 @@ c:\PROEJTO_PASC CAUAVAZ\API\API_PROJETO_PASC\
 
 ---
 
-## 🔗 FRONTEND ANGULAR
+## FRONTEND ANGULAR
 
 ### 📍 Localização
 ```
@@ -158,23 +158,23 @@ npm start
 
 ---
 
-## 🚀 Fluxo de Trabalho Completo
+## Fluxo de Trabalho Completo
 
-### 1️⃣ Iniciar Backend
+### 1. Iniciar Backend
 ```powershell
 cd "c:\PROEJTO_PASC CAUAVAZ\API\backend"
 dotnet run --project src/Paschoalotto.API
 ```
 **Aguarde:** `Now listening on: http://localhost:5000`
 
-### 2️⃣ Iniciar Frontend
+### 2. Iniciar Frontend
 ```powershell
 cd "c:\PROEJTO_PASC CAUAVAZ\FRONT\frontend"
 npm start
 ```
 **Aguarde:** `Compiled successfully`
 
-### 3️⃣ Testar Aplicação
+### 3. Testar Aplicacao
 1. Abra http://localhost:4200
 2. Será redirecionado para `/login`
 3. Clique em "Cadastre-se"
@@ -183,7 +183,7 @@ npm start
 
 ---
 
-## 📊 Resumo da Organização
+## Resumo da Organizacao
 
 | Item | Localização | Status |
 |------|-------------|--------|
@@ -194,15 +194,15 @@ npm start
 
 ---
 
-## 📚 Documentação Adicional
+## Documentacao Adicional
 
-- 📄 `API/README.md` - Documentação completa do backend
-- 📄 `API/backend/GUIA_RAPIDO.md` - Comandos essenciais
-- 📄 Este arquivo - Visão geral da estrutura
+- API/README.md - Documentacao completa do backend
+- API/backend/GUIA_RAPIDO.md - Comandos essenciais
+- Este arquivo - Visao geral da estrutura
 
 ---
 
-## 🎯 Próximos Passos Sugeridos
+## Proximos Passos Sugeridos
 
 1. **Criar Controller de Produtos** (se necessário)
    - Endpoint GET /api/produtos

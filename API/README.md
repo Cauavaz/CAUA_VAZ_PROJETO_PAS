@@ -1,6 +1,6 @@
-# 📁 Estrutura do Backend - Projeto Paschoalotto
+# Estrutura do Backend
 
-## 🎯 Backend Oficial (USAR ESTE)
+## Backend Oficial
 
 **Localização:** `c:\PROEJTO_PASC CAUAVAZ\API\backend\`
 
@@ -42,7 +42,7 @@ backend/
 
 ```
 
-### 🚀 Como Executar
+### Como Executar
 
 ```powershell
 # Navegar até a pasta do backend
@@ -58,7 +58,7 @@ dotnet ef database update --project src/Paschoalotto.API
 dotnet run --project src/Paschoalotto.API
 ```
 
-### 📡 Endpoints Disponíveis
+### Endpoints Disponíveis
 
 **Base URL:** `http://localhost:5000`
 
@@ -70,7 +70,7 @@ dotnet run --project src/Paschoalotto.API
 #### Swagger
 - `GET /swagger` - Documentação interativa da API
 
-### 🔧 Configurações
+### Configurações
 
 **appsettings.json:**
 ```json
@@ -87,7 +87,7 @@ dotnet run --project src/Paschoalotto.API
 }
 ```
 
-### 🗄️ Banco de Dados
+### Banco de Dados
 
 **Tabelas:**
 - `Users` - Usuários do sistema (com autenticação JWT)
@@ -95,7 +95,7 @@ dotnet run --project src/Paschoalotto.API
 
 ---
 
-## ⚠️ Backend Antigo (NÃO USAR - APENAS REFERÊNCIA)
+## Backend Antigo (NÃO USAR - APENAS REFERÊNCIA)
 
 **Localização:** `c:\PROEJTO_PASC CAUAVAZ\API\API_PROJETO_PASC\`
 
@@ -110,7 +110,7 @@ Este é o backend antigo com estrutura simples. **Não utilize mais este projeto
 
 ---
 
-## 📝 Próximos Passos
+## Próximos Passos
 
 1. **Criar Migration para Produtos:**
    ```powershell
@@ -125,7 +125,7 @@ Este é o backend antigo com estrutura simples. **Não utilize mais este projeto
 
 ---
 
-## 🔐 Segurança
+## Segurança
 
 - ✅ Senhas criptografadas com BCrypt
 - ✅ JWT com expiração configurável
@@ -135,7 +135,7 @@ Este é o backend antigo com estrutura simples. **Não utilize mais este projeto
 
 ---
 
-## 📚 Tecnologias
+## Tecnologias
 
 - .NET 8
 - Entity Framework Core

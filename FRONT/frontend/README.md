@@ -1,4 +1,4 @@
-# Frontend - Sistema Paschoalotto
+# Frontend
 
 Aplicacao Angular 18 para gestao de titulos financeiros.
 
