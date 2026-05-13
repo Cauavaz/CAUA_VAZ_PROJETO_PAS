@@ -1,0 +1,156 @@
+<section class="page">
+  <div class="page-header">
+    <div>
+      <h1>Cadastrar Título</h1>
+      <p class="subtitle">
+        Informe os dados do devedor, as condições e as parcelas da dívida.
+      </p>
+    </div>
+  </div>
+
+  <form class="card" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <fieldset class="section">
+      <legend>Dados do Título</legend>
+
+      <div class="grid">
+        <div class="field">
+          <label for="numeroTitulo">Número do Título</label>
+          <input
+            id="numeroTitulo"
+            type="text"
+            formControlName="numeroTitulo"
+            [class.invalid]="hasError('numeroTitulo', 'required')"
+            placeholder="Ex.: 101010"
+          />
+        </div>
+
+        <div class="field">
+          <label for="nomeDevedor">Nome do Devedor</label>
+          <input
+            id="nomeDevedor"
+            type="text"
+            formControlName="nomeDevedor"
+            [class.invalid]="hasError('nomeDevedor', 'required')"
+            placeholder="Nome completo"
+          />
+        </div>
+
+        <div class="field">
+          <label for="cpfDevedor">CPF do Devedor</label>
+          <input
+            id="cpfDevedor"
+            type="text"
+            inputmode="numeric"
+            maxlength="14"
+            formControlName="cpfDevedor"
+            placeholder="000.000.000-00"
+            [class.invalid]="hasError('cpfDevedor', 'required') || hasError('cpfDevedor', 'cpfInvalid')"
+            (input)="onCpfInput($event)"
+          />
+        </div>
+
+        <div class="field">
+          <label for="percentualJuros">Juros</label>
+          <div class="input-suffix">
+            <input
+              id="percentualJuros"
+              type="number"
+              step="0.01"
+              min="0"
+              formControlName="percentualJuros"
+              [class.invalid]="hasError('percentualJuros', 'required') || hasError('percentualJuros', 'min')"
+            />
+            <span class="suffix">% ao mês</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="percentualMulta">Multa</label>
+          <div class="input-suffix">
+            <input
+              id="percentualMulta"
+              type="number"
+              step="0.01"
+              min="0"
+              formControlName="percentualMulta"
+              [class.invalid]="hasError('percentualMulta', 'required') || hasError('percentualMulta', 'min')"
+            />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="section">
+      <div class="section-head">
+        <legend>Parcelas da Dívida</legend>
+        <button type="button" class="btn btn-success" (click)="adicionarParcela()">
+          + Adicionar Parcela
+        </button>
+      </div>
+
+      <div formArrayName="parcelas" class="parcelas-list">
+        @for (parcelaGroup of parcelas.controls; track $index; let i = $index) {
+          <div class="parcela" [formGroupName]="i">
+            <div class="field field-numero">
+              <label [for]="'numero-' + i">Nº</label>
+              <input
+                [id]="'numero-' + i"
+                type="number"
+                min="1"
+                step="1"
+                formControlName="numero"
+                [class.invalid]="parcelaGroup.controls.numero.touched && parcelaGroup.controls.numero.invalid"
+              />
+            </div>
+
+            <div class="field field-data">
+              <label [for]="'dataVencimento-' + i">Data de vencimento</label>
+              <input
+                [id]="'dataVencimento-' + i"
+                type="date"
+                formControlName="dataVencimento"
+                [class.invalid]="parcelaGroup.controls.dataVencimento.touched && parcelaGroup.controls.dataVencimento.invalid"
+              />
+            </div>
+
+            <div class="field field-valor">
+              <label [for]="'valor-' + i">Valor (R$)</label>
+              <input
+                [id]="'valor-' + i"
+                type="number"
+                min="0.01"
+                step="0.01"
+                formControlName="valor"
+                [class.invalid]="parcelaGroup.controls.valor.touched && parcelaGroup.controls.valor.invalid"
+              />
+            </div>
+
+            <button
+              type="button"
+              class="btn-remove"
+              [disabled]="parcelas.length <= 1"
+              (click)="removerParcela(i)"
+              [attr.aria-label]="'Remover parcela ' + (i + 1)"
+              title="Remover parcela"
+            >
+              ×
+            </button>
+          </div>
+        }
+      </div>
+
+      <div class="resumo">
+        <span>{{ parcelasCount() }} parcela(s)</span>
+        <span class="resumo-total">Total: {{ parcelasTotal() | currencyBrl }}</span>
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn btn-primary" [disabled]="saving()">
+        {{ saving() ? 'Salvando...' : 'Salvar Título' }}
+      </button>
+    </div>
+  </form>
+</section>

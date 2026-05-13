@@ -1,0 +1,57 @@
+<section class="page">
+  <div class="page-header">
+    <div>
+      <h1>Títulos Cadastrados</h1>
+      <p class="subtitle">
+        Lista consolidada com o valor atualizado calculado na data de hoje.
+      </p>
+    </div>
+    <a class="btn btn-primary" routerLink="/titulos/novo">Cadastrar Título</a>
+  </div>
+
+  @if (loading()) {
+    <div class="state state-loading">Carregando títulos...</div>
+  } @else if (titulos().length === 0 && !carregamentoFalhou()) {
+    <div class="state state-empty">
+      Nenhum título cadastrado. Clique em
+      <a routerLink="/titulos/novo">Cadastrar Título</a> para começar.
+    </div>
+  } @else if (titulos().length > 0) {
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Número do Título</th>
+            <th>Nome do Devedor</th>
+            <th>CPF</th>
+            <th class="num">Qtd. Parcelas</th>
+            <th class="num">Valor Original</th>
+            <th class="num">Dias em Atraso</th>
+            <th class="num">Valor Atualizado</th>
+            <th class="num">Atualizado em</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (titulo of titulos(); track titulo.id) {
+            <tr>
+              <td>{{ titulo.numeroTitulo }}</td>
+              <td>{{ titulo.nomeDevedor }}</td>
+              <td>{{ titulo.cpfDevedor | cpf }}</td>
+              <td class="num">{{ titulo.quantidadeParcelas }}</td>
+              <td class="num">{{ titulo.valorOriginal | currencyBrl }}</td>
+              <td class="num">
+                <span
+                  class="badge"
+                  [class.badge-warn]="titulo.diasAtraso > 0"
+                  [class.badge-ok]="titulo.diasAtraso === 0"
+                >{{ titulo.diasAtraso }}</span>
+              </td>
+              <td class="num strong">{{ titulo.valorAtualizado | currencyBrl }}</td>
+              <td class="num">{{ titulo.dataAtualizacao | date: 'dd/MM/yyyy' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

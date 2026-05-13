@@ -1,0 +1,189 @@
+<section class="dash">
+  <header class="dash-header">
+    <div>
+      <h1>Dashboard</h1>
+      <p class="subtitle">
+        Visão geral dos títulos cadastrados na data de hoje.
+      </p>
+    </div>
+    <a class="btn btn-primary" routerLink="/titulos/novo">+ Cadastrar Título</a>
+  </header>
+
+  @if (loading()) {
+    <div class="card state">Carregando dados...</div>
+  } @else if (totalTitulos() === 0) {
+    <div class="card state">
+      Nenhum título cadastrado ainda. Comece em
+      <a routerLink="/titulos/novo">Cadastrar Título</a>.
+    </div>
+  } @else {
+    <div class="kpi-grid">
+      <article class="kpi">
+        <div class="kpi-icon icon-blue" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="3"></rect>
+            <path d="M3 9h18"></path>
+            <path d="M9 4v16"></path>
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Total de títulos</span>
+          <span class="kpi-value">{{ totalTitulos() }}</span>
+          <span class="kpi-foot">{{ totalParcelas() }} parcelas</span>
+        </div>
+      </article>
+
+      <article class="kpi">
+        <div class="kpi-icon icon-violet" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Devedores únicos</span>
+          <span class="kpi-value">{{ totalDevedores() }}</span>
+          <span class="kpi-foot">Pessoas distintas (CPF)</span>
+        </div>
+      </article>
+
+      <article class="kpi">
+        <div class="kpi-icon icon-green" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1v22"></path>
+            <path d="M17 5H9a3 3 0 0 0 0 6h6a3 3 0 0 1 0 6H7"></path>
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Valor original</span>
+          <span class="kpi-value">{{ valorOriginalTotal() | currencyBrl }}</span>
+          <span class="kpi-foot">Soma das parcelas</span>
+        </div>
+      </article>
+
+      <article class="kpi">
+        <div class="kpi-icon icon-red" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3v18h18"></path>
+            <path d="m7 14 4-4 4 4 6-6"></path>
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Valor atualizado</span>
+          <span class="kpi-value">{{ valorAtualizadoTotal() | currencyBrl }}</span>
+          <span class="kpi-foot">
+            +{{ acrescimoTotal() | currencyBrl }}
+            ({{ percentualAcrescimo() | number:'1.1-1' }}%)
+          </span>
+        </div>
+      </article>
+
+      <article class="kpi">
+        <div class="kpi-icon icon-amber" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 2"></path>
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Média de dias em atraso</span>
+          <span class="kpi-value">{{ mediaDiasAtraso() }} dias</span>
+          <span class="kpi-foot">{{ titulosEmAtraso() }} título(s) em atraso</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="panel-grid">
+      <article class="panel">
+        <header class="panel-header">
+          <div>
+            <h2>Maiores devedores</h2>
+            <p>Top 5 por valor atualizado</p>
+          </div>
+          <a routerLink="/titulos" class="link">Ver todos →</a>
+        </header>
+
+        <ul class="rank-list">
+          @for (dev of topDevedores(); track dev.cpf; let i = $index) {
+            <li>
+              <span class="rank">{{ i + 1 }}</span>
+              <div class="rank-info">
+                <span class="rank-name">{{ dev.nome }}</span>
+                <span class="rank-meta">{{ dev.titulos }} título(s)</span>
+              </div>
+              <span class="rank-value">{{ dev.valor | currencyBrl }}</span>
+            </li>
+          }
+        </ul>
+      </article>
+
+      <article class="panel">
+        <header class="panel-header">
+          <div>
+            <h2>Distribuição por atraso</h2>
+            <p>Quantidade de títulos por faixa</p>
+          </div>
+        </header>
+
+        <ul class="bar-list">
+          @for (faixa of faixasAtraso(); track faixa.label) {
+            <li>
+              <div class="bar-label">
+                <span>{{ faixa.label }}</span>
+                <span class="bar-count">{{ faixa.quantidade }}</span>
+              </div>
+              <div class="bar-track">
+                <span
+                  class="bar-fill"
+                  [style.width.%]="larguraBarra(faixa.quantidade)"
+                  [style.background-color]="faixa.cor"
+                ></span>
+              </div>
+            </li>
+          }
+        </ul>
+      </article>
+    </div>
+
+    <article class="panel">
+      <header class="panel-header">
+        <div>
+          <h2>Últimos títulos cadastrados</h2>
+          <p>Mais recentes primeiro</p>
+        </div>
+        <a routerLink="/titulos" class="link">Ver listagem completa →</a>
+      </header>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Número</th>
+              <th>Devedor</th>
+              <th class="num">Parcelas</th>
+              <th class="num">Dias em atraso</th>
+              <th class="num">Valor atualizado</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (titulo of ultimosTitulos(); track titulo.id) {
+              <tr>
+                <td>{{ titulo.numeroTitulo }}</td>
+                <td>{{ titulo.nomeDevedor }}</td>
+                <td class="num">{{ titulo.quantidadeParcelas }}</td>
+                <td class="num">
+                  <span
+                    class="chip"
+                    [class.chip-warn]="titulo.diasAtraso > 0"
+                    [class.chip-ok]="titulo.diasAtraso === 0"
+                  >{{ titulo.diasAtraso }}</span>
+                </td>
+                <td class="num strong">{{ titulo.valorAtualizado | currencyBrl }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </article>
+  }
+</section>
