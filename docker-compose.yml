@@ -1,0 +1,59 @@
+name: paschoalotto-dev
+
+services:
+  # SQL Server
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: paschoalotto_sql
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: 123456C09c
+      MSSQL_PID: Express
+      MSSQL_COLLATION: Latin1_General_CI_AS
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    restart: unless-stopped
+    networks:
+      - paschoalotto-network
+
+  # Backend API
+  back:
+    build:
+      context: ./API/backend
+      dockerfile: Dockerfile
+    container_name: paschoalotto_api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080;http://+:8081
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ConxaoBancoPasc;User Id=sa;Password=123456C09c;TrustServerCertificate=true
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - sqlserver
+    restart: unless-stopped
+    networks:
+      - paschoalotto-network
+
+  # Frontend
+  front:
+    build:
+      context: ./FRONT/frontend
+      dockerfile: Dockerfile
+    container_name: paschoalotto_front
+    ports:
+      - "3000:80"  # Ajuste conforme a porta do seu frontend
+    depends_on:
+      - back
+    restart: unless-stopped
+    networks:
+      - paschoalotto-network
+
+volumes:
+  sqlserver_data:
+
+networks:
+  paschoalotto-network:
+    driver: bridge

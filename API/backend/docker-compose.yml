@@ -1,0 +1,34 @@
+name: paschoalotto-dev
+
+services:
+  # SQL Server
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: paschoalotto_sql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=47766@C09c
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    restart: unless-stopped
+
+  # Backend API
+  back:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: paschoalotto_api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080;http://+:8081
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ConxaoBancoPasc;User Id=sa;Password=47766@C09c;TrustServerCertificate=true
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    restart: unless-stopped
+
+volumes:
+  sqlserver_data:

@@ -1,0 +1,17 @@
+.env
+.env.local
+node_modules/
+dist/
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.vscode/
+*.db
+*.mdf
+*.ldf
+.DS_Store
+Thumbs.db
+.angular/
+coverage/

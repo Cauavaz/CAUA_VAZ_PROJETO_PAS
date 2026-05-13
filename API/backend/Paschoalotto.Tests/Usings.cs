@@ -1,0 +1,9 @@
+global using Xunit;
+global using FluentAssertions;
+global using Moq;
+global using Microsoft.EntityFrameworkCore;
+global using Paschoalotto.Domain.Entities;
+global using Paschoalotto.Application.Validation;
+global using Paschoalotto.Application.DTOs.Titulos;
+global using Paschoalotto.Application.Interfaces;
+global using Paschoalotto.Application.Services;
